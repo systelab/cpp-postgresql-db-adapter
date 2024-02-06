@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Find external dependencides
-find_package(DbAdapterInterface)
+find_package(DbAdapterInterface REQUIRED)
 find_package(PostgreSQL REQUIRED)
 
 # Configure preprocessor definitions
@@ -15,7 +15,11 @@ set(DB_POSTGRESQL_ADAPTER DbPostgreSQLAdapter)
 file(GLOB_RECURSE DB_POSTGRESQL_ADAPTER_SRC "*.cpp")
 file(GLOB_RECURSE DB_POSTGRESQL_ADAPTER_HDR "*.h")
 add_library(${DB_POSTGRESQL_ADAPTER} STATIC ${DB_POSTGRESQL_ADAPTER_SRC} ${DB_POSTGRESQL_ADAPTER_HDR})
-target_link_libraries(${DB_POSTGRESQL_ADAPTER} DbAdapterInterface::DbAdapterInterface)
+
+if(DbAdapterInterface_FOUND)
+    include_directories(${DbAdapterInterface_INCLUDE_DIRS})
+    target_link_libraries(${DB_POSTGRESQL_ADAPTER} DbAdapterInterface::DbAdapterInterface )
+endif()
 
 if(PostgreSQL_FOUND)
     include_directories(${PostgreSQL_INCLUDE_DIRS})
