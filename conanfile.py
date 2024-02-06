@@ -16,9 +16,13 @@ class DbPostgreSQLAdapterConan(ConanFile):
 
     def configure(self):
         self.options["DbAdapterInterface"].boost = self.options.boost
+        self.options["libpq"].shared = True
+        self.options["libpq"].with_openssl = True
 
     def requirements(self):
         self.requires("DbAdapterInterface/1.1.13@systelab/stable")
+        self.requires("openssl/3.0.13@", override=True)
+        self.requires("libpq/15.4@")
 
     def build(self):
         cmake = CMake(self)
