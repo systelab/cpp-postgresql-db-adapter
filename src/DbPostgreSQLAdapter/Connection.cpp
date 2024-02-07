@@ -6,11 +6,9 @@
 #include "libpq-fe.h"
 
 namespace {
-	template<typename T>
-	using deleted_unique_ptr = std::unique_ptr < T, std::function<void(T*)>;
-	deleted_unique_ptr<PGresult> makePGResult(const PGresult* result)
+	std::unique_ptr<PGresult, void(*)(PGresult*)> makePGResult(PGresult* result)
 	{
-		return deleted_unique_ptr<PGresult>(result, PQclear);
+		return std::unique_ptr<PGresult, void(*)(PGresult*)>(result, PQclear);
 	}
 }
 
@@ -22,17 +20,21 @@ namespace systelab { namespace db { namespace postgresql {
 	std::unique_ptr<IDatabase> Connection::loadDatabase(IConnectionConfiguration& configuration)
 	{
 		PGconn* connection;
-		const char* url = configuration.getParameter("url").data();
-		const char* port = configuration.getParameter("port").data();
-		const char* user = configuration.getParameter("user").data();
-		const char* password = configuration.getParameter("password").data();
-		const char* dbName = configuration.hasParameter("database") ? configuration.getParameter("database").data() : nullptr;
+		const std::string host = configuration.getParameter("host");
+		const std::string port = configuration.getParameter("port");
+		const std::string user = configuration.getParameter("user");
+		const std::string password = configuration.getParameter("password");
+		boost::optional<std::string> dbName;
+		if (configuration.hasParameter("database"))
+		{
+			dbName = configuration.getParameter("database");
+		}
 
-		connection = PQsetdbLogin(url, port, nullptr, nullptr, dbName , user, password);
+		connection = PQsetdbLogin(host.data(), port.data(), nullptr, nullptr, (dbName ? dbName->data() : nullptr), user.data(), password.data());
 		if (PQstatus(connection) != CONNECTION_OK)
 		{
 			const std::string extendedMessage = PQerrorMessage(connection);
-			throw PostgreSQLException("Unable to connect to database '" + std::string(dbName) + "'", extendedMessage);
+			throw PostgreSQLException("Unable to connect to database '" + (dbName ? *dbName : "") + "'", extendedMessage);
 		}
 
 		/* Set always-secure search path, so malicious users can't take control. */
@@ -40,7 +42,7 @@ namespace systelab { namespace db { namespace postgresql {
 		if (PQresultStatus(result.get()) != PGRES_TUPLES_OK)
 		{
 			const std::string extendedMessage = PQerrorMessage(connection);
-			throw PostgreSQLException("Unable to connect to database '" + std::string(dbName) + "'", extendedMessage);
+			throw PostgreSQLException("Unable to connect to database '" + (dbName ? *dbName : "") + "'", extendedMessage);
 		}
 	
 		return std::make_unique<Database>(connection);
