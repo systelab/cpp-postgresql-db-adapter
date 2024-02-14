@@ -4,11 +4,6 @@ cmake_minimum_required(VERSION 3.20)
 find_package(DbAdapterInterface REQUIRED)
 find_package(PostgreSQL REQUIRED)
 
-# Configure preprocessor definitions
-add_compile_options(-DBOOST_ALL_DYN_LINK)
-
-# Add project folder into includes
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Configure RapidJSONAdapter static library
 set(DB_POSTGRESQL_ADAPTER DbPostgreSQLAdapter)
@@ -16,15 +11,12 @@ file(GLOB_RECURSE DB_POSTGRESQL_ADAPTER_SRC "*.cpp")
 file(GLOB_RECURSE DB_POSTGRESQL_ADAPTER_HDR "*.h")
 add_library(${DB_POSTGRESQL_ADAPTER} STATIC ${DB_POSTGRESQL_ADAPTER_SRC} ${DB_POSTGRESQL_ADAPTER_HDR})
 
-if(DbAdapterInterface_FOUND)
-    include_directories(${DbAdapterInterface_INCLUDE_DIRS})
-    target_link_libraries(${DB_POSTGRESQL_ADAPTER} DbAdapterInterface::DbAdapterInterface )
-endif()
+target_include_directories(${DB_POSTGRESQL_ADAPTER} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+													PUBLIC ${DbAdapterInterface_INCLUDE_DIRS}
+													PRIVATE ${PostgreSQL_INCLUDE_DIRS})
 
-if(PostgreSQL_FOUND)
-    include_directories(${PostgreSQL_INCLUDE_DIRS})
-    target_link_libraries(${DB_POSTGRESQL_ADAPTER} PostgreSQL::pq)
-endif()
+target_link_libraries(${DB_POSTGRESQL_ADAPTER} DbAdapterInterface::DbAdapterInterface 
+											   PostgreSQL::pq)
 
 #Configure source groups
 foreach(FILE ${DB_POSTGRESQL_ADAPTER_SRC} ${DB_POSTGRESQL_ADAPTER_HDR}) 

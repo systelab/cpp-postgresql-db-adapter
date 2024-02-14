@@ -10,8 +10,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Configure include directories
-include_directories(${CMAKE_SOURCE_DIR}/src)
-
 # Add subprojects
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/DbPostgreSQLAdapter)
+add_subdirectory(${CMAKE_SOURCE_DIR}/test/DbPostgreSQLAdapterTest)
