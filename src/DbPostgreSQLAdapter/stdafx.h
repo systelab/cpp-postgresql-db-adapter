@@ -9,13 +9,14 @@
 #endif
 
 // STL
+#include <algorithm>
+#include <chrono>
+#include <format>
+#include <map>
 #include <memory>
+#include <mutex>
+#include <numeric>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <map>
-#include <algorithm>
-
-//3RD PARTY
-#define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
-
-#include <boost/optional.hpp>
+#include <optional>
