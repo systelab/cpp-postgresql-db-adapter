@@ -12,17 +12,10 @@ class DbPostgreSQLAdapterConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "*", "!*.yml", "!*.md", "!.gitattributes", "!.gitignore", "!LICENSE"
 
-    def configure(self):
-        self.options["libpq"].shared = True
-        self.options["libpq"].with_openssl = True
-
     def requirements(self):
         self.requires("DbAdapterInterface/0.0.0@systelab/testing")
         self.requires("openssl/3.0.13@", override=True)
         self.requires("libpq/15.4@")
-
-    def build_requirements(self):
-         self.build_requires("gtest/1.14.0@")
 
     def build(self):
         cmake = CMake(self)
