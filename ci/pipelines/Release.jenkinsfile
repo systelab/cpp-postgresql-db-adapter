@@ -63,8 +63,8 @@ pipeline
 							dir("build-${configurations[i]}")
 							{
 								sh "conan install .. --profile ../conan.install.profile -s build_type=${configurations[i]}"
-								sh "cmake .. -G
-								sh "cmake --build ${configurations[i]}.
+								sh "cmake .. -G"
+								sh "cmake --build ${configurations[i]}"
 								sh "conan export-pkg .. ${packageName}/${version}@systelab/${channel} -s build_type=${configurations[i]}--force"
 								sh "bin/${configurations[i]}/${testApplication}.exe --gtest_output=xml:${testApplication}.xml"
 							}
