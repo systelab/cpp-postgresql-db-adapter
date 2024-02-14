@@ -51,14 +51,14 @@ pipeline
 					{
 						stage('Build ' + configurations[i])
 						{
-							sh "mkdir build-${configurations[i]}"
+							bat "mkdir build-${configurations[i]}"
 							dir("build-${configurations[i]}")
 							{
-								sh "conan install .. --profile ../conan.install.profile -s build_type=${configurations[i]}"
-								sh "cmake .. -G"
-								sh "cmake --build ${configurations[i]}"
-								sh "conan export-pkg .. ${packageName}/${version}@systelab/${channel} -s build_type=${configurations[i]}--force"
-								sh "bin/${configurations[i]}/${testApplication}.exe --gtest_output=xml:${testApplication}.xml"
+								bat "conan install .. --profile ../conan.install.profile -s build_type=${configurations[i]}"
+								bat "cmake .. -G"
+								bat "cmake --build ${configurations[i]}"
+								bat "conan export-pkg .. ${packageName}/${version}@systelab/${channel} -s build_type=${configurations[i]}--force"
+								bat "bin/${configurations[i]}/${testApplication}.exe --gtest_output=xml:${testApplication}.xml"
 							}
 						}
 					}
@@ -76,8 +76,8 @@ pipeline
 			{
 				script
 				{
-					sh "conan remove ${packageName}/${version}@systelab/${channel} -r systelab-conan-local --force"
-					sh "conan upload ${packageName}/${version}@systelab/${channel} --all -r systelab-conan-local --force"
+					bat "conan remove ${packageName}/${version}@systelab/${channel} -r systelab-conan-local --force"
+					bat "conan upload ${packageName}/${version}@systelab/${channel} --all -r systelab-conan-local --force"
 				}
 			}
 		}
