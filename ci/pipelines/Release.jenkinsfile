@@ -65,7 +65,7 @@ pipeline
 								bat "conan install .. --profile ../conan.install.profile -s build_type=${configurations[i]}"
 								bat "cmake .. -G"
 								bat "cmake --build ${configurations[i]}"
-								bat "conan export-pkg .. ${packageName}/${version}@systelab/${channel} -s build_type=${configurations[i]}--force"
+								bat "conan export-pkg .. --profile ../conan.deploy.profile ${packageName}/${version}@systelab/${channel} -s build_type=${configurations[i]}--force"
 								bat "bin/${configurations[i]}/${testApplication}.exe --gtest_output=xml:${testApplication}.xml"
 							}
 						}
