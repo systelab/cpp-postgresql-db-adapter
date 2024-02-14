@@ -1,18 +1,18 @@
 #include "stdafx.h"
 #include "ConnectionConfiguration.h"
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db:: postgresql {
 
 	ConnectionConfiguration::ConnectionConfiguration(const std::string& user,
 													 const std::string& password,
 													 const std::string& host,
 													 const std::string& port,
-													 const boost::optional<std::string>& database)
+													 const std::optional<std::string>& database)
 		: m_parameters({{ "host", host }, { "user", user }, { "password", password }, { "port", port }})
 	{
 		if(database.has_value())
 		{
-			m_parameters.insert({ "database", database.get() });
+			m_parameters.insert({ "database", database.value() });
 		}
 	}
 
@@ -30,9 +30,7 @@ namespace systelab { namespace db { namespace postgresql {
 			return m_parameters.at(parameterName);
 		}
 		
-		return "";
-		
+		return "";	
 	}
-
-}}}
+}
 

@@ -2,7 +2,7 @@
 
 #include "DbAdapterInterface/IConnectionConfiguration.h"
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db::postgresql {
 
 	class ConnectionConfiguration : public IConnectionConfiguration
 	{
@@ -11,7 +11,7 @@ namespace systelab { namespace db { namespace postgresql {
 								const std::string& password,
 								const std::string& host,
 								const std::string& port = "5432",
-								const boost::optional<std::string>& database = boost::none);
+								const std::optional<std::string>& database = std::nullopt);
 		~ConnectionConfiguration() override;
 
 		bool hasParameter(const std::string& name) const override;
@@ -20,4 +20,4 @@ namespace systelab { namespace db { namespace postgresql {
 	private:
 		std::map<std::string, std::string> m_parameters;
 	};
-}}}
+}
