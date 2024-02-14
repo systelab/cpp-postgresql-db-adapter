@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Connection.h"
 
+#include "ConnectionConfiguration.h"
 #include "Database.h"
 
 #include "libpq-fe.h"
@@ -12,7 +13,7 @@ namespace {
 	}
 }
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db::postgresql {
 
 	Connection::Connection()
 	{}
@@ -24,7 +25,7 @@ namespace systelab { namespace db { namespace postgresql {
 		const std::string port = configuration.getParameter("port");
 		const std::string user = configuration.getParameter("user");
 		const std::string password = configuration.getParameter("password");
-		boost::optional<std::string> dbName;
+		std::optional<std::string> dbName;
 		if (configuration.hasParameter("database"))
 		{
 			dbName = configuration.getParameter("database");
@@ -47,5 +48,5 @@ namespace systelab { namespace db { namespace postgresql {
 	
 		return std::make_unique<Database>(connection);
 	}
-}}}
+}
 
