@@ -31,10 +31,20 @@ See [BUILD.md](BUILD.md) document for details.
 
 ## Usage
 
-TBD
+Establish connection to a SQLite database by creating a configuration object that specifies the path of .db file to open:
 
+```cpp
+#include "DbPostgreSQLAdapter/Connection.h"
+#include "DbPostgreSQLAdapter/ConnectionConfiguration.h"
 
-### Encryption
+const std::string dbName = "dummyDB";
+const std::string dbHost = "localhost";
+const std::string dbUser = "User";
+const std::string dbPassword = "Password";
+const std::string dbPort = "5432";
 
-TBD
+static const ConnectionConfiguration defaultConfiguration(dbUser, dbPassword, dbHost, dbPort, dbName);
+std::unique_ptr<systelab::db::IDatabase> database = systelab::db::postgresql::Connection().loadDatabase(configuration);
+```
 
+Use the created systelab::db::IDatabase object to access to the database as described on C++ Database Adapter documentation.
