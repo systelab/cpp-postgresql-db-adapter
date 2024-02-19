@@ -61,7 +61,7 @@ namespace systelab::db::postgresql::unit_test {
 				<< ", " << "'" << getFieldStringNoIndexValue(i) << "'"
 				<< ", " << getFieldRealValue(i)
 				<< ", " << (getFieldBooleanValue(i) ? "True" : "False")
-				<< ", " << "'" << dateTimeToISOString(getFieldDateValue(i)) << "'"
+				<< ", " << "'" << utils::dateTimeToISOString(getFieldDateValue(i)) << "'"
 				<< " ) RETURNING ID";
 
 			db.executeOperation(oss.str());

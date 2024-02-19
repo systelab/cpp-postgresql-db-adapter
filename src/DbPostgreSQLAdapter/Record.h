@@ -2,8 +2,6 @@
 
 #include "DbAdapterInterface/IRecord.h"
 
-typedef struct pg_result PGresult;
-
 namespace systelab::db {
 	class IFieldValue;
 	class IRecordSet;

@@ -1,21 +1,14 @@
 #include "stdafx.h"
 #include "Record.h"
 
+#include "DbAdapterInterface/IRecordSet.h"
+#include "DbAdapterInterface/Types.h"
 #include "Field.h"
 #include "FieldValue.h"
 
-#include "DbAdapterInterface/IRecordSet.h"
-
 #include "libpq-fe.h"
 
-namespace {
-	std::chrono::system_clock::time_point stringISOToDateTime(const std::string& dateTime)
-	{
-		std::chrono::system_clock::time_point timePointDateTime;
-		std::istringstream{ dateTime } >> std::chrono::parse("%F %T%z", timePointDateTime);
-		return timePointDateTime;
-	}
-}
+#include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {
 
@@ -51,7 +44,7 @@ namespace systelab::db::postgresql {
 						break;
 
 					case DATETIME:
-						fieldValue = std::make_unique<FieldValue>(field, stringISOToDateTime(value));
+						fieldValue = std::make_unique<FieldValue>(field, utils::stringISOToDateTime(value));
 						break;
 					case BINARY:
 					default:

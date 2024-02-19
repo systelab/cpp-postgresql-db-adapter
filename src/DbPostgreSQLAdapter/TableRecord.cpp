@@ -8,19 +8,7 @@
 
 #include "libpq-fe.h"
 
-namespace {
-	std::chrono::system_clock::time_point getDateTimeFromISOString(const std::string& ISODateTime)
-	{
-		if (!ISODateTime.empty())
-		{
-			std::chrono::system_clock::time_point result;
-			std::istringstream{ ISODateTime } >> std::chrono::parse("%F %T%z", result);
-			return result;
-		}
-
-		return std::chrono::system_clock::time_point{};
-	}
-}
+#include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {
 
@@ -74,7 +62,7 @@ namespace systelab::db::postgresql {
 					case DATETIME:
 					{
 						std::string stringValue(value);
-						fieldValue.reset(new FieldValue(field, getDateTimeFromISOString(stringValue)));
+						fieldValue.reset(new FieldValue(field, utils::stringISOToDateTime(stringValue)));
 					}
 					break;
 

@@ -2,20 +2,13 @@
 
 #include "Database.h"
 #include "DbAdapterInterface/ITable.h"
+#include "PostgresUtils.h"
 #include "RecordSet.h"
 #include "Table.h"
 #include "TableRecordSet.h"
 #include "Transaction.h"
 
 #include <libpq-fe.h>
-
-namespace {
-	std::unique_ptr<PGresult, void(*)(PGresult*)> createRAIIPGresult(PGresult* result)
-	{
-		return std::unique_ptr<PGresult, void(*)(PGresult*)>(result, PQclear);
-	}
-}
-
 namespace systelab::db::postgresql {
 
 	Database::Database(PGconn* database)
@@ -45,7 +38,7 @@ namespace systelab::db::postgresql {
 	std::unique_ptr<IRecordSet> Database::executeQuery(const std::string& query)
 	{
 		std::lock_guard<std::recursive_mutex> lock(m_mutex);
-		const auto statementResult = createRAIIPGresult(PQexec(m_database, query.c_str()));
+		const auto statementResult = utils::createRAIIPGresult(PQexec(m_database, query.c_str()));
 		if (PQresultStatus(statementResult.get()) == PGRES_TUPLES_OK)
 		{
 			return std::make_unique<RecordSet>(statementResult.get());
@@ -66,7 +59,7 @@ namespace systelab::db::postgresql {
 	std::unique_ptr<ITableRecordSet> Database::executeTableQuery(const std::string& query, ITable& table)
 	{	
 		std::lock_guard<std::recursive_mutex> lock(m_mutex);
-		const auto statementResult = createRAIIPGresult(PQexec(m_database, query.c_str()));
+		const auto statementResult = utils::createRAIIPGresult(PQexec(m_database, query.c_str()));
 		if (PQresultStatus(statementResult.get()) == PGRES_TUPLES_OK)
 		{
 			return std::make_unique<TableRecordSet>(table, statementResult.get());
@@ -88,7 +81,7 @@ namespace systelab::db::postgresql {
 	void Database::executeOperation(const std::string& operation)
 	{
 		std::lock_guard<std::recursive_mutex> lock(m_mutex);
-		const auto statementResult = createRAIIPGresult(PQexec(m_database, operation.c_str()));
+		const auto statementResult = utils::createRAIIPGresult(PQexec(m_database, operation.c_str()));
 		const auto result = PQresultStatus(statementResult.get());
 		if (result == PGRES_TUPLES_OK)
 		{

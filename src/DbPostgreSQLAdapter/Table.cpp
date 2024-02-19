@@ -2,26 +2,17 @@
 #include "Table.h"
 
 #include "Database.h"
+#include <DbAdapterInterface/IRecordSet.h>
+#include <DbAdapterInterface/IRecord.h>
+#include <DbAdapterInterface/IBinaryValue.h>
 #include "Field.h"
 #include "FieldValue.h"
+#include "PostgresUtils.h"
 #include "PrimaryKey.h"
 #include "PrimaryKeyValue.h"
 #include "TableRecord.h"
 
-#include <DbAdapterInterface/IRecordSet.h>
-#include <DbAdapterInterface/IRecord.h>
-
 namespace {
-	std::string dateTimeToISOString(const std::chrono::system_clock::time_point& dateTime)
-	{
-		if (dateTime != std::chrono::system_clock::time_point{})
-		{
-			return std::format("{:%F %T%z}", dateTime);
-		}
-
-		return "";
-	}
-
 	std::string getSQLValue(const systelab::db::IFieldValue& fieldValue, bool forComparison, bool forAssignment)
 	{
 		std::ostringstream fieldValueStream;
@@ -55,13 +46,13 @@ namespace {
 				fieldValueStream << fieldValue.getIntValue();
 				break;
 			case systelab::db::DOUBLE:
-				fieldValueStream << std::fixed << std::setprecision(10) << fieldValue.getDoubleValue();
+				fieldValueStream << fieldValue.getDoubleValue();
 				break;
 			case systelab::db::STRING:
 				fieldValueStream << "'" << fieldValue.getStringValue() << "'";
 				break;
 			case systelab::db::DATETIME:
-				fieldValueStream << "'" << dateTimeToISOString(fieldValue.getDateTimeValue()) << "'";
+				fieldValueStream << "'" << systelab::db::postgresql::utils::dateTimeToISOString(fieldValue.getDateTimeValue()) << "'";
 				break;
 			case systelab::db::BINARY:
 				throw std::runtime_error("Insert of tables with binary fields not implemented.");

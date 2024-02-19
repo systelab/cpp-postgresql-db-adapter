@@ -5,13 +5,7 @@
 #include "Database.h"
 
 #include "libpq-fe.h"
-
-namespace {
-	std::unique_ptr<PGresult, void(*)(PGresult*)> makePGResult(PGresult* result)
-	{
-		return std::unique_ptr<PGresult, void(*)(PGresult*)>(result, PQclear);
-	}
-}
+#include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {
 
@@ -36,7 +30,7 @@ namespace systelab::db::postgresql {
 		}
 
 		/* Set always-secure search path, so malicious users can't take control. */
-		auto result = makePGResult(PQexec(connection, "SELECT pg_catalog.set_config('search_path', '', false)"));
+		auto result = utils::createRAIIPGresult(PQexec(connection, "SELECT pg_catalog.set_config('search_path', '', false)"));
 		if (PQresultStatus(result.get()) != PGRES_TUPLES_OK)
 		{
 			const std::string extendedMessage = PQerrorMessage(connection);

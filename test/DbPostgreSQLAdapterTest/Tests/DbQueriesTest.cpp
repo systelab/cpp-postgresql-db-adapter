@@ -75,7 +75,7 @@ namespace systelab::db::postgresql::unit_test {
 			{
 				std::ostringstream oss;
 				const auto currentDate = today + std::chrono::hours(7 * i);
-				std::string strDate = dateTimeToISOString(currentDate);
+				std::string strDate = utils::dateTimeToISOString(currentDate);
 				oss << "INSERT INTO public.\"TESTS\" (ID, FIELD_INT_INDEX, FIELD_INT_NO_INDEX, FIELD_STR_INDEX, FIELD_STR_NO_INDEX, FIELD_DATE) VALUES (" 
 					<< i 
 					<< ", " << i%7 
@@ -115,6 +115,9 @@ namespace systelab::db::postgresql::unit_test {
 
 			return nRecords;
 		}
+
+		std::unique_ptr<IDatabase> m_db;
+		std::chrono::system_clock::time_point m_startTime;
 	};
 
 	TEST_F(DbQueriesTest, testQueryAll)
@@ -172,7 +175,7 @@ namespace systelab::db::postgresql::unit_test {
 		{
 			std::ostringstream oss;
 			const auto currentDate = today + std::chrono::hours(7 * i);
-			std::string strDate = dateTimeToISOString(currentDate);
+			std::string strDate = utils::dateTimeToISOString(currentDate);
 			oss << "INSERT INTO public.\"TESTS\" (ID, FIELD_INT_INDEX, FIELD_INT_NO_INDEX, FIELD_STR_INDEX, FIELD_STR_NO_INDEX) VALUES (" 
 				<< i 
 				<< ", " << i%7 
@@ -192,7 +195,7 @@ namespace systelab::db::postgresql::unit_test {
 		{
 			std::ostringstream oss;
 			const auto currentDate = today + std::chrono::hours(7 * i);
-			std::string strDate = dateTimeToISOString(currentDate);
+			std::string strDate = utils::dateTimeToISOString(currentDate);
 			oss << "INSERT INTO public.\"TESTS\" (ID, FIELD_INT_INDEX, FIELD_INT_NO_INDEX, FIELD_STR_INDEX, FIELD_STR_NO_INDEX) VALUES (" 
 				<< i 
 				<< ", " << i%7 

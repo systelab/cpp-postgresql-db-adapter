@@ -2,20 +2,7 @@
 #include "FieldValue.h"
 
 #include "DbAdapterInterface/IBinaryValue.h"
-
-namespace{
-	bool isDateTimeNull(const std::chrono::system_clock::time_point& dateTime)
-	{
-		return dateTime == std::chrono::system_clock::time_point();
-	}
-
-	std::chrono::system_clock::time_point stringISOToDateTime(const std::string& dateTime)
-	{
-		std::chrono::system_clock::time_point timePointDateTime;
-		std::istringstream{ dateTime } >> std::chrono::parse("%F %T%z", timePointDateTime);
-		return timePointDateTime;
-	}
-}
+#include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {
 
@@ -110,7 +97,7 @@ namespace systelab::db::postgresql {
 			throw std::runtime_error("Field doesn't accept a datetime value");
 		}
 
-		if (!isDateTimeNull(value))
+		if (!utils::isDateTimeNull(value))
 		{
 			m_dateTimeValue = value;
 			m_nullValue = false;
@@ -233,7 +220,7 @@ namespace systelab::db::postgresql {
 
 		if (!isNull())
 		{
-			return stringISOToDateTime(m_stringValue);
+			return utils::stringISOToDateTime(m_stringValue);
 		}
 		
 		return std::chrono::system_clock::time_point {};
@@ -364,7 +351,7 @@ namespace systelab::db::postgresql {
 		}
 		
 		m_dateTimeValue = value;
-		m_nullValue = isDateTimeNull(value);
+		m_nullValue = utils::isDateTimeNull(value);
 		m_default = false;
 	}
 
