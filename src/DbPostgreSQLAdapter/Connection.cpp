@@ -31,7 +31,7 @@ namespace systelab::db::postgresql {
 			dbName = configuration.getParameter("database");
 		}
 
-		connection = PQsetdbLogin(host.data(), port.data(), nullptr, nullptr, (dbName ? dbName->data() : nullptr), user.data(), password.data());
+		connection = PQsetdbLogin(host.c_str(), port.c_str(), nullptr, nullptr, (dbName ? dbName->c_str() : nullptr), user.c_str(), password.c_str());
 		if (PQstatus(connection) != CONNECTION_OK)
 		{
 			const std::string extendedMessage = PQerrorMessage(connection);
