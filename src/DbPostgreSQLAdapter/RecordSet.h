@@ -4,7 +4,6 @@
 
 typedef struct pg_result PGresult;
 
-
 namespace systelab::db {
 	class IField;
 	class IRecord;

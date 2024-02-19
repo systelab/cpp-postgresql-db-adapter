@@ -22,7 +22,7 @@ namespace {
 	}
 }
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db::postgresql {
 
 	TableRecord::TableRecord(ITableRecordSet& recordSet, const PGresult* statementResult, const int rowIndex)
 		: m_table(recordSet.getTable())
@@ -164,4 +164,4 @@ namespace systelab { namespace db { namespace postgresql {
 
 		return values;
 	}
-}}}
+}

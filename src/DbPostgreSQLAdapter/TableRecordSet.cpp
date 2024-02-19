@@ -8,7 +8,7 @@
 
 #include "libpq-fe.h"
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db::postgresql {
 
 	TableRecordSet::TableRecordSet(ITable& table, const PGresult* statementResult)
 		: m_table(table)
@@ -75,4 +75,4 @@ namespace systelab { namespace db { namespace postgresql {
 	{
 		m_iterator++;
 	}
-}}}
+}

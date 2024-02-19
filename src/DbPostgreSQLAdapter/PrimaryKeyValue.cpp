@@ -5,7 +5,7 @@
 #include "FieldValue.h"
 #include "PrimaryKey.h"
 
-namespace systelab { namespace db { namespace postgresql {
+namespace systelab::db::postgresql {
 
 	PrimaryKeyValue::PrimaryKeyValue(const IPrimaryKey& primaryKey)
 		:m_primaryKey(primaryKey)
@@ -99,4 +99,4 @@ namespace systelab { namespace db { namespace postgresql {
 
 		throw std::runtime_error( "The requested primary key field doesn't exist" );
 	}
-}}}
+}
