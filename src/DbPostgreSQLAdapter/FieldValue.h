@@ -1,9 +1,9 @@
 #pragma once
 
 #include "DbAdapterInterface/IFieldValue.h"
-#include "DbAdapterInterface/IBinaryValue.h"
 
 namespace systelab::db {
+	class IBinaryValue;
 	class IField;
 }
 
@@ -19,7 +19,6 @@ namespace systelab::db::postgresql {
 		FieldValue(const IField&, double);
 		FieldValue(const IField&, const std::string&);
 		FieldValue(const IField&, const std::chrono::system_clock::time_point&);
-		FieldValue(const IField&, std::unique_ptr<IBinaryValue>);
 		~FieldValue(void) override;
 
 		const IField& getField() const override;
@@ -57,6 +56,5 @@ namespace systelab::db::postgresql {
 		double m_doubleValue;
 		std::string m_stringValue;
 		std::chrono::system_clock::time_point m_dateTimeValue;
-		std::unique_ptr<IBinaryValue> m_binaryValue;
 	};
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DbAdapterInterface/IField.h"
-#include "DbAdapterInterface/IBinaryValue.h"
 
 namespace systelab::db::postgresql {
 
@@ -36,7 +35,6 @@ namespace systelab::db::postgresql {
 		double m_defaultDoubleValue;
 		std::string m_defaultStringValue;
 		std::chrono::system_clock::time_point m_defaultDateTimeValue;
-		std::unique_ptr<IBinaryValue> m_defaultBinaryValue;
 
 		void setDefaultValue(FieldTypes type, const std::string& defaultValue);
 	};

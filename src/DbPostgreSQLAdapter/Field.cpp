@@ -122,17 +122,7 @@ namespace systelab::db::postgresql {
 
 	IBinaryValue& Field::getBinaryDefaultValue() const
 	{
-		if (hasNullDefaultValue())
-		{
-			throw std::runtime_error("Default value is null");
-		}
-
-		if (m_type != BINARY)
-		{
-			throw std::runtime_error("Field type isn't binary");
-		}
-
-		return *m_defaultBinaryValue.get();
+		throw std::runtime_error("Not implemented yet");
 	}
 
 	bool Field::isPrimaryKey() const
@@ -147,7 +137,6 @@ namespace systelab::db::postgresql {
 		m_defaultDoubleValue = 0.;
 		m_defaultStringValue = "";
 		m_defaultDateTimeValue = std::chrono::system_clock::time_point {};
-		m_defaultBinaryValue.reset();
 
 		std::string defaultValueUpper = defaultValue;
 		std::transform(defaultValueUpper.begin(), defaultValueUpper.end(), defaultValueUpper.begin(), ::toupper);

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "FieldValue.h"
 
+#include "DbAdapterInterface/IBinaryValue.h"
+
 namespace{
 	bool isDateTimeNull(const std::chrono::system_clock::time_point& dateTime)
 	{
@@ -26,7 +28,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(0.)
 		, m_stringValue("")
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 	}
 
@@ -39,7 +40,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(0.)
 		, m_stringValue("")
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 		if (m_field.getType() != BOOLEAN)
 		{
@@ -56,7 +56,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(0.)
 		, m_stringValue("")
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 		if (m_field.getType() != INT)
 		{
@@ -73,7 +72,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(value)
 		, m_stringValue("")
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 		if (m_field.getType() != DOUBLE)
 		{
@@ -90,7 +88,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(0.)
 		, m_stringValue(value)
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 		if (m_field.getType() != STRING)
 		{
@@ -107,7 +104,6 @@ namespace systelab::db::postgresql {
 		, m_doubleValue(0.)
 		, m_stringValue("")
 		, m_dateTimeValue()
-		, m_binaryValue()
 	{
 		if (m_field.getType() != DATETIME)
 		{
@@ -118,23 +114,6 @@ namespace systelab::db::postgresql {
 		{
 			m_dateTimeValue = value;
 			m_nullValue = false;
-		}
-	}
-
-	FieldValue::FieldValue(const IField& field, std::unique_ptr<IBinaryValue> value)
-		: m_field(field)
-		, m_nullValue(false)
-		, m_default(false)
-		, m_boolValue(false)
-		, m_intValue(0)
-		, m_doubleValue(0.)
-		, m_stringValue("")
-		, m_dateTimeValue()
-		, m_binaryValue(std::move(value))
-	{
-		if (m_field.getType() != BINARY)
-		{
-			throw std::runtime_error("Field doesn't accept a binary value");
 		}
 	}
 
@@ -262,22 +241,7 @@ namespace systelab::db::postgresql {
 
 	IBinaryValue& FieldValue::getBinaryValue() const
 	{
-		if (isNull())
-		{
-			throw std::runtime_error("Field value is null");
-		}
-
-		if (isDefault())
-		{
-			throw std::runtime_error("Field value is default");
-		}
-
-		if (m_field.getType() != BINARY)
-		{
-			throw std::runtime_error("Field type isn't binary");
-		}
-
-		return *m_binaryValue.get();
+		throw std::runtime_error("Not implemented yet");
 	}
 
 	void FieldValue::setValue(const IFieldValue& srcFieldValue)
@@ -316,7 +280,7 @@ namespace systelab::db::postgresql {
 					setDateTimeValue(srcFieldValue.getDateTimeValue());
 					break;
 				case BINARY:
-					//setBinaryValue(srcFieldValue.getBinaryValue()); // Not implemented
+					throw std::runtime_error("Invalid record field type.");
 					break;
 			}
 		}
@@ -331,7 +295,6 @@ namespace systelab::db::postgresql {
 		m_doubleValue = 0.;
 		m_stringValue = "";
 		m_dateTimeValue = std::chrono::system_clock::time_point {};
-		m_binaryValue.reset();
 	}
 
 	void FieldValue::setDefault()
@@ -343,7 +306,6 @@ namespace systelab::db::postgresql {
 		m_doubleValue = 0.;
 		m_stringValue = "";
 		m_dateTimeValue = std::chrono::system_clock::time_point {};
-		m_binaryValue.reset();
 	}
 
 	void FieldValue::setBooleanValue(bool value)
@@ -408,14 +370,7 @@ namespace systelab::db::postgresql {
 
 	void FieldValue::setBinaryValue(std::unique_ptr<IBinaryValue> value)
 	{
-		if (m_field.getType() != BINARY)
-		{
-			throw std::runtime_error("Field type isn't binary");
-		}
-		
-		m_binaryValue = std::move(value);
-		m_nullValue = false;
-		m_default = false;
+		throw std::runtime_error("Not implemented yet");
 	}
 
 	void FieldValue::useDefaultValue()
@@ -444,8 +399,6 @@ namespace systelab::db::postgresql {
 				break;
 
 			case BINARY:
-				throw std::runtime_error("Binary field type not implemented.");
-
 			default:
 				throw std::runtime_error("Invalid field type.");
 				break;
@@ -485,8 +438,6 @@ namespace systelab::db::postgresql {
 				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_dateTimeValue));
 
 			case BINARY:
-				throw std::runtime_error("Binary field type not implemented.");
-
 			default:
 				throw std::runtime_error("Invalid field type.");
 				break;

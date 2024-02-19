@@ -79,10 +79,6 @@ namespace systelab { namespace db { namespace postgresql {
 					break;
 
 					case BINARY:
-					{
-						// TO DO
-					}
-
 					default:
 						throw std::runtime_error( "Unknown field type." );
 				}

@@ -201,7 +201,7 @@ namespace systelab::db::postgresql {
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, std::unique_ptr<IBinaryValue> value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field,std::move(value)));
+		throw std::runtime_error("Not implemented yet");
 	}
 
 	std::unique_ptr<IPrimaryKeyValue> Table::createPrimaryKeyValue() const
