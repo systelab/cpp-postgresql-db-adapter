@@ -1,7 +1,7 @@
 #pragma once
 
 namespace systelab::db::postgresql {
-    enum PostgresqlOID {
+    enum class PostgresqlOID {
         boolOID = 16,
         bytearrayOID = 17,
         charOID = 18,

@@ -10,7 +10,7 @@
 namespace systelab::db::postgresql {
 
 	namespace {
-		FieldTypes translateFromOIDtoFieldType(int oid)
+		FieldTypes translateFromOIDtoFieldType(const PostgresqlOID oid)
 		{
 			switch (oid)
 			{
@@ -136,7 +136,7 @@ namespace systelab::db::postgresql {
 			std::string fieldName(PQfname(statementResult, i));
 			int postgresqlFieldType = PQftype(statementResult, i);
 
-			FieldTypes fieldType = translateFromOIDtoFieldType(postgresqlFieldType);
+			FieldTypes fieldType = translateFromOIDtoFieldType(static_cast<PostgresqlOID>(postgresqlFieldType));
 			std::unique_ptr<IField> field(new Field(i, fieldName, fieldType, "", false));
 			m_fields.push_back(std::move(field));
 		}
