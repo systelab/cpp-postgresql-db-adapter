@@ -13,7 +13,7 @@ namespace systelab { namespace db { namespace postgresql {
 	class Connection : public IConnection
 	{
 	public:
-		Connection();
+		Connection() = default;
 		~Connection() override = default;
 
 		std::unique_ptr<IDatabase> loadDatabase(IConnectionConfiguration&) override;

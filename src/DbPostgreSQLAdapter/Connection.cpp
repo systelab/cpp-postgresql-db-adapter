@@ -15,9 +15,6 @@ namespace {
 
 namespace systelab::db::postgresql {
 
-	Connection::Connection()
-	{}
-
 	std::unique_ptr<IDatabase> Connection::loadDatabase(IConnectionConfiguration& configuration)
 	{
 		PGconn* connection;

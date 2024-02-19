@@ -20,7 +20,7 @@ namespace systelab::db:: postgresql {
 
 	bool ConnectionConfiguration::hasParameter(const std::string& parameterName) const
 	{
-		return (m_parameters.find(parameterName) != m_parameters.end());
+		return m_parameters.contains(parameterName);
 	}
 
 	std::string ConnectionConfiguration::getParameter(const std::string& parameterName) const
