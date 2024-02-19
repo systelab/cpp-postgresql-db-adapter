@@ -3,8 +3,6 @@
 
 #include "ConnectionConfiguration.h"
 #include "Database.h"
-
-#include "libpq-fe.h"
 #include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {

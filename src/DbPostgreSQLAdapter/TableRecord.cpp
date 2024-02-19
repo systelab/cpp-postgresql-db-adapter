@@ -5,9 +5,6 @@
 #include "FieldValue.h"
 
 #include "DbAdapterInterface/ITableRecordSet.h"
-
-#include "libpq-fe.h"
-
 #include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {

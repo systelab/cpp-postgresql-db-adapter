@@ -8,7 +8,6 @@
 #include "TableRecordSet.h"
 #include "Transaction.h"
 
-#include <libpq-fe.h>
 namespace systelab::db::postgresql {
 
 	Database::Database(PGconn* database)

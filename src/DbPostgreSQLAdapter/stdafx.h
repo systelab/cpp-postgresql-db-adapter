@@ -20,3 +20,6 @@
 #include <string>
 #include <vector>
 #include <optional>
+
+// 3RD PARTY
+#include <libpq-fe.h>

@@ -7,8 +7,6 @@
 
 #include "DbAdapterInterface/IFieldValue.h"
 
-#include "libpq-fe.h"
-
 namespace systelab::db::postgresql {
 
 	namespace {

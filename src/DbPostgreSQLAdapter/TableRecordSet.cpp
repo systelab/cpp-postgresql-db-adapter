@@ -6,8 +6,6 @@
 
 #include "DbAdapterInterface/ITable.h"
 
-#include "libpq-fe.h"
-
 namespace systelab::db::postgresql {
 
 	TableRecordSet::TableRecordSet(ITable& table, const PGresult* statementResult)
