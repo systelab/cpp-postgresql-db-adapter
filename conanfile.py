@@ -10,7 +10,6 @@ class DbPostgreSQLAdapterConan(ConanFile):
     license = "MIT"
     generators = "cmake_find_package"
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "*", "!*.yml", "!*.md", "!.gitattributes", "!.gitignore", "!LICENSE"
 
     def configure(self):
         self.options["libpq"].shared = True
