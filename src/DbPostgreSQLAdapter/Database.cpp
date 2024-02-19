@@ -22,7 +22,7 @@ namespace systelab::db::postgresql {
 		PQfinish(m_database);
 	}
 
-	ITable& Database::getTable(std::string tableName)
+	ITable& Database::getTable(const std::string& tableName)
 	{
 		const auto itr = m_tables.find(tableName);
 		if (itr == m_tables.cend())

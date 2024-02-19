@@ -20,7 +20,7 @@ namespace systelab::db::postgresql {
 		Database(PGconn* database);
 		~Database() override;
 
-		ITable& getTable(std::string tableName) override;
+		ITable& getTable(const std::string& tableName) override;
 		std::unique_ptr<IRecordSet> executeQuery(const std::string& query) override;
 		std::unique_ptr<ITableRecordSet> executeTableQuery(const std::string& query, ITable& table);
 		void executeOperation(const std::string& operation) override;
