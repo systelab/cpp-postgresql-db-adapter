@@ -26,14 +26,20 @@ namespace systelab::db::postgresql::unit_test {
 	 */
 	class DbUpdateOperationsTest: public Test
 	{
-	public:
-		void SetUp()
+	protected:
+		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
 			createDatabase(defaultDbName);
 
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, UPDATE_TABLE_NAME, SCHEMA_PREFIX, UPDATE_TABLE_NUM_RECORDS);
+		}
+
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
 
 		ITable& getUpdateTable() const

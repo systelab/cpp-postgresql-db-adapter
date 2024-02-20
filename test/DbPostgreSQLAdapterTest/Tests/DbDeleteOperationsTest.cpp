@@ -24,7 +24,7 @@ namespace systelab::db::postgresql::unit_test {
 	 */
 	class DbDeleteOperationsTest: public Test
 	{
-	public:
+	protected:
 		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
@@ -32,6 +32,12 @@ namespace systelab::db::postgresql::unit_test {
 
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, DELETE_TABLE_NAME, SCHEMA_PREFIX, DELETE_TABLE_NUM_RECORDS);
+		}
+
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
 
 		ITable& getDeleteTable() const

@@ -22,8 +22,8 @@ namespace systelab::db::postgresql::unit_test {
 
 	class DbQueriesTest: public Test
 	{
-	public:
-		void SetUp()
+	protected:
+		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
 			createDatabase(defaultDbName);
@@ -33,14 +33,12 @@ namespace systelab::db::postgresql::unit_test {
 			startTimeTracking();
 		}
 
-		void TearDown()
+		void TearDown() override
 		{
 			endTimeTracking();
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
-
-	protected:
-		std::unique_ptr<IDatabase> m_db;
-		std::chrono::system_clock::time_point m_startTime;
 
 		void startTimeTracking()
 		{

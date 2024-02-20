@@ -37,7 +37,7 @@ namespace systelab::db::postgresql::unit_test {
 		
 	class DbDDLOperationsTest: public Test
 	{
-	public:
+	protected:
 		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
@@ -45,6 +45,12 @@ namespace systelab::db::postgresql::unit_test {
 			
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, MAIN_TABLE, SCHEMA_PREFIX, 100);
+		}
+
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
 
 	public:

@@ -27,14 +27,20 @@ namespace systelab::db::postgresql::unit_test {
 	 */
 	class DbQueryOperationsTest : public Test
 	{
-	public:
-		void SetUp()
+	protected:
+		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
 			createDatabase(defaultDbName);
 
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, QUERY_TABLE_NAME, SCHEMA_PREFIX, QUERY_TABLE_NUM_RECORDS);
+		}
+
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
 
 		ITable& getQueryTable() const

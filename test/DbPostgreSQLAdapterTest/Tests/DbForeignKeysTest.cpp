@@ -24,7 +24,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	class DbForeignKeysTest: public Test
 	{
-	public:
+	protected:
 		void SetUp()
 		{
 			dropDatabase(defaultDbName);
@@ -33,7 +33,12 @@ namespace systelab::db::postgresql::unit_test {
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 		}
 
-	public:
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
+		}
+
 		std::unique_ptr<IDatabase> m_db;
 	};
 

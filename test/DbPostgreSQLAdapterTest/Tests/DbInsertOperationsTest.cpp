@@ -25,7 +25,7 @@ namespace systelab::db::postgresql::unit_test {
 	 */
 	class DbInsertOperationsTest: public Test
 	{
-	public:
+	protected:
 		void SetUp()
 		{
 			dropDatabase(defaultDbName);
@@ -33,6 +33,11 @@ namespace systelab::db::postgresql::unit_test {
 
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, INSERT_TABLE_NAME, SCHEMA_PREFIX, INSERT_TABLE_NUM_RECORDS);
+		}
+
+		void TearDown() override
+		{
+			dropDatabase(defaultDbName);
 		}
 
 		ITable& getInsertTable() const
@@ -162,6 +167,12 @@ namespace systelab::db::postgresql::unit_test {
 			m_db = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 			createTable(*m_db, INSERT_TABLE1_NAME, SCHEMA_PREFIX, INSERT_TABLE1_NUM_RECORDS);
 			createTable(*m_db, INSERT_TABLE2_NAME, SCHEMA_PREFIX, INSERT_TABLE2_NUM_RECORDS);
+		}
+
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
 		}
 
 		ITable& getInsertTable1() const

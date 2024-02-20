@@ -21,7 +21,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	class DbTransactionsTest: public Test
 	{
-	public:
+	protected:
 		void SetUp()
 		{
 			dropDatabase(defaultDbName);
@@ -31,7 +31,12 @@ namespace systelab::db::postgresql::unit_test {
 			createTable(*m_db, DUMMY_TABLE, SCHEMA_PREFIX, 0);
 		}
 
-	public:
+		void TearDown() override
+		{
+			m_db.release();
+			dropDatabase(defaultDbName);
+		}
+
 		std::unique_ptr<IDatabase> m_db;
 	};
 	

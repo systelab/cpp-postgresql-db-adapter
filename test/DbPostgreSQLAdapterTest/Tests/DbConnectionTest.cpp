@@ -12,10 +12,16 @@ namespace systelab::db::postgresql::unit_test {
 
 	class DbConnectionTest : public Test
 	{
+	protected:
 		void SetUp() override
 		{
 			dropDatabase(defaultDbName);
 			createDatabase(defaultDbName);
+		}
+
+		void TearDown() override
+		{
+			dropDatabase(defaultDbName);
 		}
 	};
 
