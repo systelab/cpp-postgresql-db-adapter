@@ -98,12 +98,7 @@ namespace systelab::db::postgresql {
 
 	IFieldValue& TableRecord::getFieldValue(unsigned int index) const
 	{
-		if (index >= m_fieldValues.size())
-		{
-			throw std::runtime_error( "Invalid field value index" );
-		}
-		
-		return *(m_fieldValues.at(index).get());
+		return *m_fieldValues.at(index);
 	}
 
 	IFieldValue& TableRecord::getFieldValue(const std::string& fieldName) const

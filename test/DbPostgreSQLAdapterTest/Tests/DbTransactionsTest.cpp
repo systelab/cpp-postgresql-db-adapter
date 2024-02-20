@@ -56,7 +56,7 @@ namespace systelab::db::postgresql::unit_test {
 			record->getFieldValue("field_str_index").setStringValue("hola");
 
 			// Add the record to the table:
-			table.insertRecord(*record.get());
+			table.insertRecord(*record);
 		}
 
 		transaction->commit();
@@ -81,7 +81,7 @@ namespace systelab::db::postgresql::unit_test {
 			record->getFieldValue("field_str_index").setStringValue("hola");
 
 			// Add the record to the table:
-			table.insertRecord(*record.get());
+			table.insertRecord(*record);
 		}
 
 		transaction->rollback();
@@ -124,7 +124,7 @@ namespace systelab::db::postgresql::unit_test {
 	// Delete with transaction rollback
 	TEST_F(DbTransactionsTest, testSQLOperationsDeleteRecordWithTransactionRollback)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 
 		createTable(db, MAIN_TABLE, SCHEMA_PREFIX, 25);
 

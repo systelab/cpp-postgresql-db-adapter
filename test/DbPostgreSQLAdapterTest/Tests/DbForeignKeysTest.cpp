@@ -8,12 +8,6 @@
 #include "Helpers/DefaultConnectionConfiguration.h"
 
 namespace {
-	static const std::string DDL_DB_NAME = "dummyDB";
-	static const std::string DDL_DB_HOST = "localhost";
-	static const std::string DDL_DB_USER = "testUser";
-	static const std::string DDL_DB_PASSWORD = "testPassword";
-	static const std::string DDL_DB_PORT = "5432";
-
 	static const std::string SCHEMA_PREFIX = "public";
 	static const std::string TABLE_1 = "TABLE_1";
 	static const std::string TABLE_FOREIGN_KEYS = "TABLE_FOREIGN_KEYS";
@@ -44,7 +38,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsDeleteForeignKeyDeleteNoAction)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "NO ACTION", "NO ACTION");
 
 		ASSERT_THROW(m_db->executeOperation("DELETE FROM " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " WHERE id = 1"), std::exception);
@@ -55,7 +49,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsDeleteForeignKeyDeleteCascade)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50,  "CASCADE", "NO ACTION");
 
 		m_db->executeOperation("DELETE FROM " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " WHERE id = 1");
@@ -66,7 +60,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsDeleteForeignKeyDeleteRestrict)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "RESTRICT", "NO ACTION");
 
 		ASSERT_THROW(m_db->executeOperation("DELETE FROM " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " WHERE id = 1"), std::exception);
@@ -78,7 +72,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsDeleteForeignKeyDeleteSetNull)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "SET NULL", "NO ACTION");
 
 		m_db->executeOperation("DELETE FROM " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " WHERE id = 1");
@@ -89,7 +83,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsUpdateForeignKeyUpdateNoAction)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "NO ACTION", "NO ACTION");
 
 		ASSERT_THROW(m_db->executeOperation("UPDATE " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " SET id = 1800 WHERE id = 1"), std::exception);
@@ -100,7 +94,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsUpdateForeignKeyUpdateCascade)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "NO ACTION", "CASCADE");
 
 		m_db->executeOperation("UPDATE " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " SET id = 1800 WHERE id = 1");
@@ -114,7 +108,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsUpdateForeignKeyUpdateRestrict)
 	{
-		IDatabase& db = *(m_db.get());
+		IDatabase& db = *m_db;
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "NO ACTION", "RESTRICT");
 
 		ASSERT_THROW(m_db->executeOperation("UPDATE " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " SET id = 1800 WHERE id = 1"), std::exception);
@@ -125,7 +119,7 @@ namespace systelab::db::postgresql::unit_test {
 
 	TEST_F(DbForeignKeysTest, testSQLOperationsUpdateForeignKeyUpdateSetNull)
 	{
-		IDatabase& db = *(m_db.get());		
+		IDatabase& db = *m_db;		
 		createPairOfTables(db, getPrefixedElement(TABLE_1, SCHEMA_PREFIX), 100, getPrefixedElement(TABLE_FOREIGN_KEYS, SCHEMA_PREFIX), 50, "NO ACTION", "SET NULL");
 
 		m_db->executeOperation("UPDATE " + getPrefixedElement(TABLE_1, SCHEMA_PREFIX) + " SET id = 1800 WHERE id = 1");

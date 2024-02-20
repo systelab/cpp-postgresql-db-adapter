@@ -130,7 +130,7 @@ namespace systelab::db::postgresql {
 
 	const IPrimaryKey& Table::getPrimaryKey() const
 	{
-		return *(m_primaryKey.get());
+		return *m_primaryKey;
 	}
 
 	unsigned int Table::getFieldsCount() const
@@ -140,7 +140,7 @@ namespace systelab::db::postgresql {
 
 	const IField& Table::getField(unsigned int index) const
 	{
-		return *(m_fields.at(index).get());
+		return *m_fields.at(index);
 	}
 
 	const IField& Table::getField(const std::string& fieldName) const
@@ -291,7 +291,7 @@ namespace systelab::db::postgresql {
 		const unsigned int fieldsCount = static_cast<unsigned int>(m_fields.size());
 		for (unsigned int i = 0; i < fieldsCount; i++)
 		{
-			const IField& field = *(m_fields.at(i).get());
+			const IField& field = *m_fields.at(i);
 			std::unique_ptr<IFieldValue> fieldValue = createFieldValue(field);
 			fieldValue->setDefault();
 			fieldValues.push_back(std::move(fieldValue));

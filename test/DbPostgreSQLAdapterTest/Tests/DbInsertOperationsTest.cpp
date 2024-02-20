@@ -66,7 +66,7 @@ namespace systelab::db::postgresql::unit_test {
 			record->getFieldValue("field_bool").setBooleanValue((i%2) == 0);
 			record->getFieldValue("field_date").setDateTimeValue(getFieldDateValue(i));
 
-			RowsAffected nRows = table.insertRecord(*record.get());
+			RowsAffected nRows = table.insertRecord(*record);
 			ASSERT_EQ(nRows, 1);
 		}
 
@@ -115,11 +115,11 @@ namespace systelab::db::postgresql::unit_test {
 		record->getFieldValue("field_date").setDateTimeValue(std::chrono::system_clock::time_point{});
 
 		// Insert the record into table
-		RowsAffected nRows = table.insertRecord(*record.get());
+		RowsAffected nRows = table.insertRecord(*record);
 		ASSERT_EQ(nRows, 1);
 
 		// Try to insert again the same record (without success)
-		ASSERT_THROW(table.insertRecord(*record.get()), std::exception);
+		ASSERT_THROW(table.insertRecord(*record), std::exception);
 	}
 
 	TEST_F(DbInsertOperationsTest, testInsertRecordFillsRecordWithGeneratedIdentifierAndDefaultValues)
@@ -130,7 +130,7 @@ namespace systelab::db::postgresql::unit_test {
 		record->getFieldValue("field_int_index").setIntValue(1);
 		record->getFieldValue("field_str_index").setStringValue("STR");
 
-		RowsAffected nRows = table.insertRecord(*record.get());
+		RowsAffected nRows = table.insertRecord(*record);
 		ASSERT_EQ(1, nRows);
 
 		// Check the identifier of the inserted record
@@ -204,7 +204,7 @@ namespace systelab::db::postgresql::unit_test {
 					newRecord->getFieldValue("field_int_index").setIntValue(101 + i);
 					newRecord->getFieldValue("field_str_index").setStringValue("NEW-RECORD-TABLE1-" + std::to_string(i));
 
-					RowsAffected nRows = table1.insertRecord(*newRecord.get());
+					RowsAffected nRows = table1.insertRecord(*newRecord);
 
 					unsigned int expectedRecordId = INSERT_TABLE1_NUM_RECORDS + 1 + i;
 					EXPECT_EQ(expectedRecordId, newRecord->getFieldValue("id").getIntValue()) << " for insertion #" << i;
@@ -221,7 +221,7 @@ namespace systelab::db::postgresql::unit_test {
 					newRecord->getFieldValue("field_int_index").setIntValue(202 + i);
 					newRecord->getFieldValue("field_str_index").setStringValue("NEW-RECORD-TABLE2-" + std::to_string(i));
 
-					RowsAffected nRows = table2.insertRecord(*newRecord.get());
+					RowsAffected nRows = table2.insertRecord(*newRecord);
 
 					unsigned int expectedRecordId = INSERT_TABLE2_NUM_RECORDS + 1 + i;
 					EXPECT_EQ(expectedRecordId, newRecord->getFieldValue("id").getIntValue()) << " for insertion #" << i;

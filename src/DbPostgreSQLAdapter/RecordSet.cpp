@@ -69,14 +69,7 @@ namespace systelab::db::postgresql {
 
 	const IField& RecordSet::getField(unsigned int index) const
 	{
-		if (index < m_fields.size())
-		{
-			return *(m_fields[index].get());
-		}
-		else
-		{
-			throw std::runtime_error( "Invalid field index" );
-		}
+		return *m_fields.at(index);
 	}
 
 	const IField& RecordSet::getField(const std::string& fieldName) const
@@ -84,9 +77,9 @@ namespace systelab::db::postgresql {
 		unsigned int nFields = (unsigned int) m_fields.size();
 		for (unsigned int i = 0; i < nFields; i++)
 		{
-			if (m_fields[i]->getName() == fieldName)
+			if (m_fields.at(i)->getName() == fieldName)
 			{
-				return *(m_fields[i].get());
+				return *m_fields.at(i);
 			}
 		}
 
@@ -100,7 +93,7 @@ namespace systelab::db::postgresql {
 
 	const IRecord& RecordSet::getCurrentRecord() const
 	{
-		return *m_iterator->get();
+		return **m_iterator;
 	}
 
 	std::unique_ptr<IRecord> RecordSet::copyCurrentRecord() const

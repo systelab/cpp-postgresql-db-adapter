@@ -74,7 +74,7 @@ namespace systelab::db::postgresql {
 			throw std::runtime_error("Invalid field value index");
 		}
 
-		return *(m_fieldValues.at(index).get());
+		return *m_fieldValues.at(index);
 	}
 
 	IFieldValue& Record::getFieldValue(const std::string& fieldName) const
@@ -82,9 +82,9 @@ namespace systelab::db::postgresql {
 		unsigned int nFields = (unsigned int) m_fieldValues.size();
 		for (unsigned int i = 0; i < nFields; i++)
 		{
-			if (m_fieldValues[i]->getField().getName() == fieldName)
+			if (m_fieldValues.at(i)->getField().getName() == fieldName)
 			{
-				return *(m_fieldValues[i].get());
+				return *m_fieldValues.at(i);
 			}
 		}
 

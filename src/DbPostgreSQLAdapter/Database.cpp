@@ -31,7 +31,7 @@ namespace systelab::db::postgresql {
 		}
 
 		const auto& table = m_tables.at(tableName);
-		return *(table.get());
+		return *table;
 	}
 
 	std::unique_ptr<IRecordSet> Database::executeQuery(const std::string& query)
