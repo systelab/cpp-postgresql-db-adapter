@@ -1,7 +1,7 @@
 def channel = "testing"
 def version = "0.0.0"
-def packageName = "DbSQLiteAdapter"
-def testApplication = "DbSQLiteAdapterTest"
+def packageName = "DbPostgreSQLAdapter"
+def testApplication = "DbPostgreSQLAdapterTest"
 
 library identifier: "cpp-jenkins-pipelines@master", retriever: modernSCM(
   [$class: "GitSCMSource",
