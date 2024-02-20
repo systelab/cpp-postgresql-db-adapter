@@ -6,18 +6,7 @@
 #include "DbAdapterInterface/IDatabase.h"
 #include "DbAdapterInterface/ITransaction.h"
 #include "DefaultConnectionConfiguration.h"
-
-namespace {
-	std::string dateTimeToISOString(const std::chrono::system_clock::time_point& dateTime)
-	{
-		if (dateTime != std::chrono::system_clock::time_point{})
-		{
-			return std::format("{:%F %T%z}", dateTime);
-		}
-
-		return "";
-	}
-}
+#include "PostgresUtils.h"
 
 using namespace std::chrono_literals;
 namespace systelab::db::postgresql::unit_test {

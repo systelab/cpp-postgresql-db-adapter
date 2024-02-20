@@ -9,20 +9,11 @@
 #include "DbAdapterInterface/ITransaction.h"
 #include "Helpers/Helpers.h"
 #include "Helpers/DefaultConnectionConfiguration.h"
+#include "PostgresUtils.h"
 
 namespace {
 	static const std::string SCHEMA_PREFIX = "public";
 	static const std::string EVALUATION_TABLE_NAME = "TESTS";
-
-	std::string dateTimeToISOString(const std::chrono::system_clock::time_point& dateTime)
-	{
-		if (dateTime != std::chrono::system_clock::time_point{})
-		{
-			return std::format("{:%F %T%z}", dateTime);
-		}
-
-		return "";
-	}
 }
 
 using namespace testing;
