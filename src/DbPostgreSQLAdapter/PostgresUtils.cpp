@@ -31,8 +31,8 @@ namespace systelab::db::postgresql::utils {
 
 	bool isBooleanTrue(const std::string& postgresBoolean)
 	{
-		std::string lowerCaseValue; 
-		std::transform(postgresBoolean.cbegin(), postgresBoolean.cend(), lowerCaseValue.begin(), ::tolower);
+		std::string lowerCaseValue = postgresBoolean; 
+		std::transform(lowerCaseValue.cbegin(), lowerCaseValue.cend(), lowerCaseValue.begin(), ::tolower);
 
 		return (lowerCaseValue == "t"
 			    || lowerCaseValue == "true"

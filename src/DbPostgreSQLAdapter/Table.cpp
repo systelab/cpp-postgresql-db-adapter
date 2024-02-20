@@ -46,7 +46,7 @@ namespace {
 				fieldValueStream << fieldValue.getIntValue();
 				break;
 			case systelab::db::DOUBLE:
-				fieldValueStream << fieldValue.getDoubleValue();
+				fieldValueStream << std::setprecision(10) << fieldValue.getDoubleValue();
 				break;
 			case systelab::db::STRING:
 				fieldValueStream << "'" << fieldValue.getStringValue() << "'";
