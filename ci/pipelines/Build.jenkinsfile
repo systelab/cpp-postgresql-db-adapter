@@ -55,7 +55,7 @@ pipeline
 							dir("build-${configurations[i]}")
 							{
 								bat "conan install .. --profile ../conan.profile -s build_type=${configurations[i]}"
-								bat "cmake .. -G"
+								bat "cmake .."
 								bat "cmake --build ${configurations[i]}"
 								bat "conan export-pkg .. ${packageName}/${version}@systelab/${channel} --profile ../conan.profile -s build_type=${configurations[i]} --force"
 								bat "bin/${configurations[i]}/${testApplication}.exe --gtest_output=xml:${testApplication}.xml"
