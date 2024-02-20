@@ -28,7 +28,7 @@ namespace systelab::db::postgresql {
 				switch(fieldType)
 				{
 					case BOOLEAN:
-						fieldValue = std::make_unique<FieldValue>(field, (value == "t"));
+						fieldValue = std::make_unique<FieldValue>(field, utils::isBooleanTrue(value));
 						break;
 					case INT:
 						fieldValue = std::make_unique<FieldValue>(field, std::stoi(value));

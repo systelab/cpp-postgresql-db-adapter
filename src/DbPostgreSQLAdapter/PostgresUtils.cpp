@@ -29,4 +29,18 @@ namespace systelab::db::postgresql::utils {
 		return dateTime == std::chrono::system_clock::time_point();
 	}
 
+	bool isBooleanTrue(const std::string& postgresBoolean)
+	{
+		std::string lowerCaseValue; 
+		std::transform(postgresBoolean.cbegin(), postgresBoolean.cend(), lowerCaseValue.begin(), ::tolower);
+
+		return (lowerCaseValue == "t"
+			    || lowerCaseValue == "true"
+			    || lowerCaseValue == "y"
+				|| lowerCaseValue == "yes"
+				|| lowerCaseValue == "on"
+				|| lowerCaseValue == "1"
+				);
+	}
+
 }

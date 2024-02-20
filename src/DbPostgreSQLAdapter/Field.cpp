@@ -1,14 +1,7 @@
 #include "stdafx.h"
 #include "Field.h"
 
-namespace {
-	std::chrono::system_clock::time_point stringISOToDateTime(const std::string& dateTime)
-	{
-		std::chrono::system_clock::time_point timePointDateTime;
-		std::istringstream{ dateTime } >> std::chrono::parse("%F %T%z", timePointDateTime);
-		return timePointDateTime;
-	}
-}
+#include "PostgresUtils.h"
 
 namespace systelab::db::postgresql {
 
@@ -150,7 +143,7 @@ namespace systelab::db::postgresql {
 			switch (type)
 			{
 				case BOOLEAN:
-					m_defaultBoolValue = (defaultValueUpper == "t");
+					m_defaultBoolValue = utils::isBooleanTrue(defaultValueUpper);
 					break;
 				case INT:
 					m_defaultIntValue = std::stoi(defaultValue);
@@ -162,7 +155,7 @@ namespace systelab::db::postgresql {
 					m_defaultStringValue = defaultValue;
 					break;
 				case DATETIME:
-					m_defaultDateTimeValue = stringISOToDateTime(defaultValue);
+					m_defaultDateTimeValue = utils::stringISOToDateTime(defaultValue);
 					break;
 				case BINARY:
 				default:

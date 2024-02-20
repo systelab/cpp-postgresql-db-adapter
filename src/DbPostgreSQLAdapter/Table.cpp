@@ -108,7 +108,7 @@ namespace {
 		else
 		{
 			std::string excMessage = "Postgress type name not recognized: " + postgresTypeName;
-			throw std::runtime_error(excMessage.c_str());
+			throw std::runtime_error(excMessage);
 		}
 	}
 }
@@ -630,7 +630,7 @@ namespace systelab::db::postgresql {
 		if (m_fields.empty())
 		{
 			std::string excMessage = "Table " + m_name + " doesn't exist in database.";
-			throw std::runtime_error(excMessage.c_str());
+			throw std::runtime_error(excMessage);
 		}
 	}
 

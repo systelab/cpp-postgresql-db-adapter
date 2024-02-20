@@ -24,13 +24,13 @@ namespace systelab::db::postgresql {
 			}
 			else
 			{
-				FieldTypes fieldType = field.getType();
+				const FieldTypes fieldType = field.getType();
 				const std::string value = PQgetvalue(statementResult, rowIndex, fieldIndex);
 				switch(fieldType)
 				{
 					case BOOLEAN:
 					{
-						bool boolValue = (value == "t");
+						bool boolValue = utils::isBooleanTrue(value);
 						fieldValue.reset(new FieldValue(field, boolValue));
 					}
 					break;

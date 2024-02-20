@@ -11,4 +11,6 @@ namespace systelab::db::postgresql::utils {
 	std::chrono::system_clock::time_point stringISOToDateTime(const std::string& dateTime);
 	std::string dateTimeToISOString(const std::chrono::system_clock::time_point& dateTime);
 	bool isDateTimeNull(const std::chrono::system_clock::time_point& dateTime);
+
+	bool isBooleanTrue(const std::string& postgresBoolean);
 }
