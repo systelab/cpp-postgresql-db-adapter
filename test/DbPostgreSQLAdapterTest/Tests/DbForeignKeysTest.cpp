@@ -29,7 +29,7 @@ namespace systelab::db::postgresql::unit_test {
 
 		void TearDown() override
 		{
-			m_db.release();
+			m_db.reset();
 			dropDatabase(defaultDbName);
 		}
 

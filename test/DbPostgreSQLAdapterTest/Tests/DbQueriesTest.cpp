@@ -36,7 +36,7 @@ namespace systelab::db::postgresql::unit_test {
 		void TearDown() override
 		{
 			endTimeTracking();
-			m_db.release();
+			m_db.reset();
 			dropDatabase(defaultDbName);
 		}
 
