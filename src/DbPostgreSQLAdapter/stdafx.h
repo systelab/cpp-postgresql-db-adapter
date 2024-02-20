@@ -21,6 +21,7 @@
 #include <vector>
 #include <optional>
 #include <ranges>
+#include <source_location>
 
 // 3RD PARTY
 #include <libpq-fe.h>

@@ -8,6 +8,18 @@
 #include "TableRecordSet.h"
 #include "Transaction.h"
 
+namespace {
+	void throwPostgressException(const PGResult* statementResult, const std::source_location& srcLocation = std::source_location::current())
+	{
+		const std::string errorMessage = PQresultErrorMessage(statementResult);
+		std::ostringstream exceptionStrem;
+		exceptionStrem << "# ERR: SQLException in " << srcLocation.file_name()
+			<< "(" << srcLocation.function_name() << ") on line " << srcLocation.line() << std::endl
+			<< "# ERR: " << errorMessage << std::endl;
+		throw std::runtime_error(exceptionStrem.str()); // Or specific exception if available
+	}
+}
+
 namespace systelab::db::postgresql {
 
 	Database::Database(PGconn* database)
@@ -22,14 +34,13 @@ namespace systelab::db::postgresql {
 
 	ITable& Database::getTable(const std::string& tableName)
 	{
-		const auto itr = m_tables.find(tableName);
-		if (itr == m_tables.cend())
+		auto tableIterator = m_tables.find(tableName);
+		if (tableIterator == m_tables.cend())
 		{
-			m_tables.insert(std::make_pair(tableName, new Table(*this, tableName)));
+			tableIterator = m_tables.emplace(tableName, std::make_unique<Table>(*this, tableName)).first;
 		}
 
-		const auto& table = m_tables.at(tableName);
-		return *table;
+		return *(*tableIterator).second;
 	}
 
 	std::unique_ptr<IRecordSet> Database::executeQuery(const std::string& query)
@@ -40,17 +51,8 @@ namespace systelab::db::postgresql {
 		{
 			return std::make_unique<RecordSet>(statementResult.get());
 		}
-		else
-		{
-			const std::string errorMessage = PQresultErrorMessage(statementResult.get());
-			
-			std::ostringstream exceptionStrem;
-			exceptionStrem << "# ERR: SQLException in " << __FILE__;
-			exceptionStrem << "(Database::executeQuery) on line " << __LINE__ << '\n';
-			exceptionStrem << "# ERR: " << errorMessage << std::endl;
 
-			throw std::runtime_error(exceptionStrem.str());
-		}
+		throwPostgressException(statementResult.get());
 	}
 
 	std::unique_ptr<ITableRecordSet> Database::executeTableQuery(const std::string& query, ITable& table)
@@ -61,18 +63,8 @@ namespace systelab::db::postgresql {
 		{
 			return std::make_unique<TableRecordSet>(table, statementResult.get());
 		}
-		else
-		{
-			const std::string errorMessage = PQresultErrorMessage(statementResult.get());
 
-			std::ostringstream exceptionStrem;
-			exceptionStrem << "# ERR: SQLException in " << __FILE__;
-			exceptionStrem << "(Database::executeOperation) on line " << __LINE__ << '\n';
-			exceptionStrem << "# ERR: " << errorMessage << std::endl;
-
-			throw std::runtime_error(exceptionStrem.str());
-		}
-
+		throwPostgressException(statementResult.get());
 	}
 
 	void Database::executeOperation(const std::string& operation)
@@ -89,14 +81,7 @@ namespace systelab::db::postgresql {
 		}
 		else if (result != PGRES_COMMAND_OK)
 		{
-			const std::string errorMessage = PQresultErrorMessage(statementResult.get());
-
-			std::ostringstream exceptionStrem;
-			exceptionStrem << "# ERR: SQLException in " << __FILE__;
-			exceptionStrem << "(Database::executeOperation) on line " << __LINE__ << '\n';
-			exceptionStrem << "# ERR: " << errorMessage << std::endl;
-
-			throw std::runtime_error(exceptionStrem.str());
+			throwPostgressException(statementResult.get());
 		}
 
 		m_lastOperationRowsAffected = std::atoi(PQcmdTuples(statementResult.get()));
