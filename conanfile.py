@@ -36,6 +36,8 @@ class DbPostgreSQLAdapterConan(ConanFile):
     def package(self):
         self.copy("*DbPostgreSQLAdapter.lib", dst="lib", keep_path=False)
         self.copy("*DbPostgreSQLAdapter.pdb", dst="lib", keep_path=False)
-
+        self.copy("src/DbPostgreSQLAdapter/*.h", dst="include", keep_path=False)
+        
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.includedirs = ["include"]
