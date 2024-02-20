@@ -8,19 +8,16 @@ namespace systelab::db::postgresql {
 	Transaction::Transaction(IDatabase& database)
 		: m_database(database)
 	{
-		std::string operation = "BEGIN TRANSACTION";
-		m_database.executeOperation(operation);
+		m_database.executeOperation("BEGIN TRANSACTION");
 	}
 
 	void Transaction::commit()
 	{
-		std::string operation = "END";
-		m_database.executeOperation(operation);
+		m_database.executeOperation("END");
 	}
 
 	void Transaction::rollback()
 	{
-		std::string operation = "ROLLBACK";
-		m_database.executeOperation(operation);
+		m_database.executeOperation("ROLLBACK");
 	}
 }
