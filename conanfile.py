@@ -16,7 +16,7 @@ class DbPostgreSQLAdapterConan(ConanFile):
         self.options["libpq"].with_openssl = True
 
     def requirements(self):
-        self.requires("DbAdapterInterface/0.0.0@systelab/testing")
+        self.requires("DbAdapterInterface/2.0.0@systelab/stable")
         self.requires("zlib/1.2.13#13c96f538b52e1600c40b88994de240f", override=True)
         self.requires("openssl/3.0.13#05ab04ecefd8822c9b50c84febe403b3", override=True)
         self.requires("libpq/15.4@")
