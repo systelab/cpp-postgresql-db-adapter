@@ -43,4 +43,14 @@ namespace systelab::db::postgresql::utils {
 				);
 	}
 
+	void throwPostgressException(const PGresult* statementResult, const std::source_location& srcLocation)
+	{
+		const std::string errorMessage = PQresultErrorMessage(statementResult);
+		std::ostringstream exceptionStrem;
+		exceptionStrem << "# ERR: SQLException in " << srcLocation.file_name()
+			<< "(" << srcLocation.function_name() << ") on line " << srcLocation.line() << std::endl
+			<< "# ERR: " << errorMessage << std::endl;
+		throw std::runtime_error(exceptionStrem.str()); // Or specific exception if available
+	}
+
 }

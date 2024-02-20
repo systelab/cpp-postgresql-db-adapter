@@ -8,18 +8,6 @@
 #include "TableRecordSet.h"
 #include "Transaction.h"
 
-namespace {
-	void throwPostgressException(const PGResult* statementResult, const std::source_location& srcLocation = std::source_location::current())
-	{
-		const std::string errorMessage = PQresultErrorMessage(statementResult);
-		std::ostringstream exceptionStrem;
-		exceptionStrem << "# ERR: SQLException in " << srcLocation.file_name()
-			<< "(" << srcLocation.function_name() << ") on line " << srcLocation.line() << std::endl
-			<< "# ERR: " << errorMessage << std::endl;
-		throw std::runtime_error(exceptionStrem.str()); // Or specific exception if available
-	}
-}
-
 namespace systelab::db::postgresql {
 
 	Database::Database(PGconn* database)
@@ -52,7 +40,7 @@ namespace systelab::db::postgresql {
 			return std::make_unique<RecordSet>(statementResult.get());
 		}
 
-		throwPostgressException(statementResult.get());
+		utils::throwPostgressException(statementResult.get());
 	}
 
 	std::unique_ptr<ITableRecordSet> Database::executeTableQuery(const std::string& query, ITable& table)
@@ -64,7 +52,7 @@ namespace systelab::db::postgresql {
 			return std::make_unique<TableRecordSet>(table, statementResult.get());
 		}
 
-		throwPostgressException(statementResult.get());
+		utils::throwPostgressException(statementResult.get());
 	}
 
 	void Database::executeOperation(const std::string& operation)
@@ -81,7 +69,7 @@ namespace systelab::db::postgresql {
 		}
 		else if (result != PGRES_COMMAND_OK)
 		{
-			throwPostgressException(statementResult.get());
+			utils::throwPostgressException(statementResult.get());
 		}
 
 		m_lastOperationRowsAffected = std::atoi(PQcmdTuples(statementResult.get()));

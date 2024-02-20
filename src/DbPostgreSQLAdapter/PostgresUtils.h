@@ -13,4 +13,6 @@ namespace systelab::db::postgresql::utils {
 	bool isDateTimeNull(const std::chrono::system_clock::time_point& dateTime);
 
 	bool isBooleanTrue(const std::string& postgresBoolean);
+
+	void throwPostgressException(const PGresult* statementResult, const std::source_location& srcLocation = std::source_location::current());
 }
