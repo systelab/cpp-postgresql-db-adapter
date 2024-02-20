@@ -32,17 +32,12 @@ namespace systelab { namespace db { namespace postgresql {
 
 	const IField& PrimaryKey::getField(unsigned int index) const
 	{
-		if (index >= m_fields.size())
-		{
-			throw std::runtime_error( "Invalid primary key field index" );
-		}
-
-		return *(m_fields.at(index));
+		return *m_fields.at(index);
 	}
 
 	const IField& PrimaryKey::getField(const std::string& fieldName) const
 	{
-		const auto fieldIterator = std::find_if(m_fields.cbegin(), m_fields.cend(), 
+		const auto fieldIterator = std::ranges::find_if(m_fields, 
 			[&fieldName](const IField* field)
 			{ 
 				return field->getName() == fieldName; 

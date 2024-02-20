@@ -2,8 +2,6 @@
 
 #include "DbAdapterInterface/ITableRecord.h"
 
-typedef struct pg_result PGresult;
-
 namespace systelab { namespace db {
 	class ITableRecordSet;
 }}

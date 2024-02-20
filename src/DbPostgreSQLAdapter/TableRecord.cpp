@@ -78,13 +78,8 @@ namespace systelab::db::postgresql {
 
 	TableRecord::TableRecord(ITable& table, std::vector< std::unique_ptr<IFieldValue> >& fieldValues)
 		: m_table(table)
-	{
-		const unsigned int fieldValuesCount = static_cast<unsigned int>(fieldValues.size());
-		for (unsigned int i = 0; i < fieldValuesCount; i++)
-		{
-			m_fieldValues.push_back(std::move(fieldValues.at(i)));
-		}
-	}
+		, m_fieldValues(std::move(fieldValues))
+	{}
 
 	ITable& TableRecord::getTable() const
 	{
@@ -103,7 +98,7 @@ namespace systelab::db::postgresql {
 
 	IFieldValue& TableRecord::getFieldValue(const std::string& fieldName) const
 	{
-		const auto fieldValueIterator = std::find_if(m_fieldValues.cbegin(), m_fieldValues.cend(),
+		const auto fieldValueIterator = std::ranges::find_if(m_fieldValues,
 			[&fieldName](const std::unique_ptr<IFieldValue>& fieldValue)
 			{
 				return fieldValue->getField().getName() == fieldName;
@@ -111,7 +106,7 @@ namespace systelab::db::postgresql {
 
 		if (fieldValueIterator != m_fieldValues.cend())
 		{
-			return *(fieldValueIterator->get());
+			return **fieldValueIterator;
 		}
 		
 		throw std::runtime_error( "The requested field value doesn't exist" );
@@ -119,7 +114,7 @@ namespace systelab::db::postgresql {
 
 	bool TableRecord::hasFieldValue(const std::string& fieldName) const
 	{
-		const auto fieldValueIterator = std::find_if(m_fieldValues.cbegin(), m_fieldValues.cend(),
+		const auto fieldValueIterator = std::ranges::find_if(m_fieldValues,
 			[&fieldName](const std::unique_ptr<IFieldValue>& fieldValue)
 			{
 				return fieldValue->getField().getName() == fieldName;
@@ -131,9 +126,7 @@ namespace systelab::db::postgresql {
 	std::vector<IFieldValue*> TableRecord::getValuesList() const
 	{
 		std::vector<IFieldValue*> values;
-		const unsigned int recordFieldValuesCount = getFieldValuesCount();
-
-		std::for_each(m_fieldValues.cbegin(), m_fieldValues.cend(),
+		std::ranges::for_each(m_fieldValues, 
 			[this, &values](const std::unique_ptr<IFieldValue>& fieldValue)
 			{
 				if (!fieldValue->getField().isPrimaryKey())

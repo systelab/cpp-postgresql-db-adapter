@@ -33,7 +33,7 @@ namespace systelab::db::postgresql {
 		PGconn* m_database;
 		std::map<std::string, std::unique_ptr<ITable>> m_tables;
 		std::recursive_mutex m_mutex;
-		RowsAffected m_lastOperationRowsAffected;
-		RowId m_lastInsertedRowId;
+		RowsAffected m_lastOperationRowsAffected = 0;
+		RowId m_lastInsertedRowId = 0;
 	};
 }

@@ -410,19 +410,19 @@ namespace systelab::db::postgresql {
 		switch (fieldType)
 		{
 			case BOOLEAN:
-				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_boolValue));
+				return std::make_unique<FieldValue>(m_field, m_boolValue);
 
 			case INT:
-				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_intValue));
+				return std::make_unique<FieldValue>(m_field, m_intValue);
 
 			case DOUBLE:
-				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_doubleValue));
+				return std::make_unique<FieldValue>(m_field, m_doubleValue);
 
 			case STRING:
-				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_stringValue));
+				return std::make_unique<FieldValue>(m_field, m_stringValue);
 
 			case DATETIME:
-				return std::unique_ptr<IFieldValue>(new FieldValue(m_field, m_dateTimeValue));
+				return std::make_unique<FieldValue>(m_field, m_dateTimeValue);
 
 			case BINARY:
 			default:

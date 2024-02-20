@@ -97,7 +97,7 @@ namespace systelab::db::postgresql::unit_test {
 		primaryKeyValue->getFieldValue("id").setIntValue(27);
 
 		std::unique_ptr<ITableRecord> record = table.getRecordByPrimaryKey(*primaryKeyValue);
-		ASSERT_TRUE(record.get() != 0);
+		ASSERT_THAT(record, NotNull());
 		ASSERT_EQ(record->getFieldValue("id").getIntValue(), 27);
 		assertRecord(*record);
 	}

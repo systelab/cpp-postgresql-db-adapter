@@ -108,7 +108,7 @@ namespace systelab::db::postgresql {
 			copiedFieldValues.push_back( fieldValue.clone() );
 		}
 
-		return std::unique_ptr<IRecord>( new Record(copiedFieldValues) );
+		return std::make_unique<Record>(copiedFieldValues);
 	}
 
 	bool RecordSet::isCurrentRecordValid() const

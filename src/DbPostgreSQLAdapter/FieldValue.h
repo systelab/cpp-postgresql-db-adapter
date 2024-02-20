@@ -17,7 +17,7 @@ namespace systelab::db::postgresql {
 		FieldValue(const IField&, bool);
 		FieldValue(const IField&, int);
 		FieldValue(const IField&, double);
-		FieldValue(const IField&, const std::string&);
+		explicit FieldValue(const IField&, const std::string&);
 		FieldValue(const IField&, const std::chrono::system_clock::time_point&);
 		~FieldValue(void) override;
 

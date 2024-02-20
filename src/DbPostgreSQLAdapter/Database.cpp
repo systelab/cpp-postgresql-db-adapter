@@ -12,8 +12,6 @@ namespace systelab::db::postgresql {
 
 	Database::Database(PGconn* database)
 		: m_database(database)
-		, m_lastOperationRowsAffected(0)
-		, m_lastInsertedRowId(0)
 	{
 	}
 

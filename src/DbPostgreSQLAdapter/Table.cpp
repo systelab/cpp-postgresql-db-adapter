@@ -145,49 +145,48 @@ namespace systelab::db::postgresql {
 
 	const IField& Table::getField(const std::string& fieldName) const
 	{
-		const auto field = std::find_if(m_fields.cbegin(), m_fields.cend(),
+		const auto field = std::ranges::find_if(m_fields,
 			[&fieldName](const auto& field)
 			{
 				return field->getName() == fieldName;
 			});
 
-		if (field == m_fields.cend())
+		if (field != m_fields.cend())
 		{
-			throw std::runtime_error("The requested field doesn't exist");
+			return *(field->get()); 
 		}
 
-		return *(field->get());
-		
+		throw std::runtime_error("The requested field doesn't exist");
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field));
+		return std::make_unique<FieldValue>(field);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, bool value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field, value));
+		return std::make_unique<FieldValue>(field, value);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, int value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field,value));
+		return std::make_unique<FieldValue>(field,value);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, double value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field,value));
+		return std::make_unique<FieldValue>(field,value);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, const std::string& value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field,value));
+		return std::make_unique<FieldValue>(field,value);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, const std::chrono::system_clock::time_point& value) const
 	{
-		return std::unique_ptr<IFieldValue>(new FieldValue(field,value));
+		return std::make_unique<FieldValue>(field,value);
 	}
 
 	std::unique_ptr<IFieldValue> Table::createFieldValue(const IField& field, std::unique_ptr<IBinaryValue> value) const
@@ -198,7 +197,7 @@ namespace systelab::db::postgresql {
 	std::unique_ptr<IPrimaryKeyValue> Table::createPrimaryKeyValue() const
 	{
 		const IPrimaryKey& primaryKey = getPrimaryKey();
-		return std::unique_ptr<IPrimaryKeyValue>(new PrimaryKeyValue(primaryKey));
+		return std::make_unique<PrimaryKeyValue>(primaryKey);
 	}
 
 	std::unique_ptr<ITableRecordSet> Table::getAllRecords() const
@@ -222,10 +221,8 @@ namespace systelab::db::postgresql {
 		{
 			return recordset->copyCurrentRecord();
 		}
-		else
-		{
-			return std::unique_ptr<ITableRecord>();
-		}
+		
+		return nullptr;
 	}
 
 	std::unique_ptr<ITableRecordSet> Table::filterRecordsByField(const IFieldValue& conditionValue, const IField* orderByField) const
@@ -297,7 +294,7 @@ namespace systelab::db::postgresql {
 			fieldValues.push_back(std::move(fieldValue));
 		}
 
-		return std::unique_ptr<ITableRecord>(new TableRecord(const_cast<Table&>(*this), fieldValues));
+		return std::make_unique<TableRecord>(const_cast<Table&>(*this), fieldValues);
 	}
 
 	std::unique_ptr<ITableRecord> Table::copyRecord(const ITableRecord& record) const
@@ -316,7 +313,7 @@ namespace systelab::db::postgresql {
 			copyFieldValues.push_back(std::move(copyFieldValue));
 		}
 
-		return std::unique_ptr<ITableRecord>(new TableRecord(const_cast<Table&>(*this), copyFieldValues));
+		return std::make_unique<TableRecord>(const_cast<Table&>(*this), copyFieldValues);
 	}
 
 	RowsAffected Table::insertRecord(ITableRecord& record)
