@@ -39,14 +39,3 @@ However, if you want to `Debug` the source code, you will need these commands:
 > cmake .. -G "Visual Studio 17 2022" -A x64
 > "$VSINSTALLPATH/devenv.com" DbPostgreSQLAdapter.sln /build "Debug" /PROJECT "DbPostgreSQLAdapter"
 ```
-
-### Linux
-
-``` bash
-> git clone https://github.com/systelab/cpp-postgresql-db-adapter
-> mkdir build && cd build
-> conan remote add systelab-public https://artifactory.systelab.net/artifactory/api/conan/cpp-conan-production-local
-> conan install ..
-> cmake .. -DCMAKE_BUILD_TYPE=[Debug | Coverage | Release]
-> make
-```
