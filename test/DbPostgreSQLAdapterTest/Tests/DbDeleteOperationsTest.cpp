@@ -56,7 +56,7 @@ namespace systelab::db::postgresql::unit_test {
 
 		// Check that the record has been deleted successfully
 		std::unique_ptr<ITableRecord> nullRecord = table.getRecordByPrimaryKey(*primaryKeyValue);
-		ASSERT_EQ(nullRecord.get(), nullptr);
+		ASSERT_THAT(nullRecord, IsNull());
 	}
 
 	TEST_F(DbDeleteOperationsTest, testDeleteNonExistingRecordAffectsZeroRows)

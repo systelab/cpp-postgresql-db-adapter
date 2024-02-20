@@ -24,7 +24,7 @@ namespace systelab::db::postgresql::unit_test {
 		Connection connection;
 		auto database = Connection().loadDatabase(const_cast<ConnectionConfiguration&>(defaultConfiguration));
 
-		ASSERT_TRUE(database != nullptr);
+		ASSERT_THAT(database, NotNull());
 	}
 
 	TEST_F(DbConnectionTest, testLoadDatabaseWithWrongCredentialsThrowsPostgreSQLException)
